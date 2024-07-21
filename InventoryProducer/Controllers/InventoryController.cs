@@ -18,8 +18,17 @@ namespace InventoryProducer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateInventory([FromBody] InventoryUpdateRequest request)
+        public async Task<IActionResult> UpdateInventory()
         {
+            var random = new Random();
+            
+            var request = new InventoryUpdateRequest
+            {
+                ProductId = Guid.NewGuid().ToString(),
+                Quantity = random.Next(1, 10000),
+                Id = random.Next(1, 10000)
+            };
+
             var message = JsonSerializer.Serialize(request);
 
             await _producerService.ProduceAsync("InventoryUpdates", message);
