@@ -24,7 +24,13 @@ namespace InventoryProducer.Services
             {
                 Value = message,
             };
-            await _producer.ProduceAsync(topic, kafkamessage);
+
+            var result  = await _producer.ProduceAsync(topic, kafkamessage);
+
+            if(result.Status == PersistenceStatus.Persisted)
+            {
+               Console.WriteLine($"Message '{result.Value}' delivered to '{result.TopicPartitionOffset}'");
+            }
         }
     }
 }
